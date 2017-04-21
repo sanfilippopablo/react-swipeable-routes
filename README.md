@@ -5,9 +5,9 @@ Utility for integrating [react-swipeable-views](https://github.com/oliviertassin
 
 ## Example
 
-![Example](https://fat.gfycat.com/WaterloggedMindlessAmericanshorthair.gif)
-
 Notice how the url changes when swapping.
+
+![Example](https://fat.gfycat.com/WellinformedInfamousBuckeyebutterfly.gif)
 
 This example is available on /example.
 
@@ -18,7 +18,7 @@ import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import ReactSwipeableRoutes from "react-swipeable-routes";
+import SwipeableRoutes from "react-swipeable-routes";
 
 const RedView = () => (
   <div style={{ height: 300, backgroundColor: "red" }}>Red</div>
@@ -50,12 +50,12 @@ class App extends Component {
             <Link to="/yellow">Yellow</Link>
           </div>
 
-          <ReactSwipeableRoutes>
+          <SwipeableRoutes>
             <Route path="/red" component={RedView} />
             <Route path="/blue" component={BlueView} />
             <Route path="/green" component={GreenView} />
             <Route path="/yellow" component={YellowView} />
-          </ReactSwipeableRoutes>
+          </SwipeableRoutes>
         </div>
       </Router>
     );
@@ -64,4 +64,14 @@ class App extends Component {
 
 export default App;
 
+````
+
+You can also pass props to SwipeableViews using the `swipeableViewsProps`:
+````es6
+<SwipeableRoutes swipeableViewsProps={{style: "height: 100%"}}>
+  <Route path="/red" component={RedView} />
+  <Route path="/blue" component={BlueView} />
+  <Route path="/green" component={GreenView} />
+  <Route path="/yellow" component={YellowView} />
+</SwipeableRoutes>
 ````
