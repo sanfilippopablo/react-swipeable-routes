@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import ReactSwipeableRoutes from "../../lib";
+import SwipeableRoutes from "../../lib";
 
 const RedView = () => (
   <div style={{ height: 300, backgroundColor: "red" }}>Red</div>
@@ -34,12 +34,12 @@ class App extends Component {
             <Link to="/yellow">Yellow</Link>
           </div>
 
-          <ReactSwipeableRoutes>
+          <SwipeableRoutes>
             <Route path="/red" component={RedView} />
             <Route path="/blue" component={BlueView} />
             <Route path="/green" component={GreenView} />
             <Route path="/yellow" component={YellowView} />
-          </ReactSwipeableRoutes>
+          </SwipeableRoutes>
         </div>
       </Router>
     );

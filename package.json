@@ -10,7 +10,11 @@
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
-    "babel-preset-react-app": "^2.2.0"
+    "babel-jest": "^19.0.0",
+    "babel-preset-react-app": "^2.2.0",
+    "enzyme": "^2.8.2",
+    "jest": "^19.0.2",
+    "react-addons-test-utils": "^15.5.1"
   },
   "repository": {
     "type": "git",
