@@ -66,9 +66,9 @@ export default App;
 
 ````
 
-You can also pass props to SwipeableViews using the `swipeableViewsProps`:
+Any additional props will be passed down to `SwipeableViews`:
 ````es6
-<SwipeableRoutes swipeableViewsProps={{style: "height: 100%"}}>
+<SwipeableRoutes containerStyle={{"height: 100%"}}>
   <Route path="/red" component={RedView} />
   <Route path="/blue" component={BlueView} />
   <Route path="/green" component={GreenView} />

@@ -20,10 +20,10 @@ class SwipeableRoutes extends Component {
   };
 
   render() {
-    const { children, swipeableViewsProps } = this.props;
-    const { history, route, staticContext } = this.context.router
-    const location = this.props.location || route.location
-    const props = { location, history, staticContext }
+    const { children, ...rest } = this.props;
+    const { history, route, staticContext } = this.context.router;
+    const location = this.props.location || route.location;
+    const props = { location, history, staticContext };
 
     let matchedIndex = 0; // If there's no match, render the first route
     React.Children.forEach(children, (element, index) => {
@@ -37,7 +37,7 @@ class SwipeableRoutes extends Component {
 
     return (
       <SwipeableViews
-        {...swipeableViewsProps}
+        {...rest}
         index={matchedIndex}
         onChangeIndex={this.handleIndexChange}
       >
