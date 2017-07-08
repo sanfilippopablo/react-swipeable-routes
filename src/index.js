@@ -11,29 +11,61 @@ class SwipeableRoutes extends Component {
   };
 
   handleIndexChange = (index, type) => {
+    // Trigger the location change to the route path
     const { router: { history } } = this.context;
     const paths = React.Children.map(
       this.props.children,
       element => element.props.path
     );
     history.push(paths[index]);
+
+    // Call the onChangeIndex if it's set
+    if (typeof this.props.onChangeIndex === "function") {
+      this.props.onChangeIndex(index, type);
+    }
   };
 
+  componentDidMount() {
+    const { children } = this.props;
+    const { router: { history } } = this.context;
+    this.unlistenHistory = history.listen(location => {
+      // When the location changes, call onChangeIndex with the route index
+      React.Children.forEach(children, (element, index) => {
+        const { path: pathProp, exact, strict, from } = element.props;
+        const path = pathProp || from;
+
+        if (matchPath(location.pathname, { path, exact, strict })) {
+          if (typeof this.props.onChangeIndex === "function") {
+            this.props.onChangeIndex(index);
+          }
+        }
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    this.unlistenHistory();
+  }
+
   render() {
-    const { children, ...rest } = this.props;
+    const { children, index, ...rest } = this.props;
     const { history, route, staticContext } = this.context.router;
     const location = this.props.location || route.location;
     const props = { location, history, staticContext };
 
     let matchedIndex = 0; // If there's no match, render the first route
-    React.Children.forEach(children, (element, index) => {
-      const { path: pathProp, exact, strict, from } = element.props;
-      const path = pathProp || from;
+    if (index) {
+      matchedIndex = index;
+    } else {
+      React.Children.forEach(children, (element, index) => {
+        const { path: pathProp, exact, strict, from } = element.props;
+        const path = pathProp || from;
 
-      if (matchPath(location.pathname, { path, exact, strict })) {
-        matchedIndex = index;
-      }
-    });
+        if (matchPath(location.pathname, { path, exact, strict })) {
+          matchedIndex = index;
+        }
+      });
+    }
 
     return (
       <SwipeableViews

@@ -18,6 +18,10 @@ const YellowView = () => (
 );
 
 class App extends Component {
+  state = {
+    index: 0
+  };
+
   render() {
     return (
       <Router>
@@ -28,18 +32,40 @@ class App extends Component {
           </div>
 
           <div>
-            <Link to="/red">Red</Link> |
-            <Link to="/blue">Blue</Link> | 
-            <Link to="/green">Green</Link> | 
-            <Link to="/yellow">Yellow</Link>
+            <h3>Simple example</h3>
+
+            <div>
+              <Link to="/red">Red</Link> |
+              <Link to="/blue">Blue</Link> |
+              <Link to="/green">Green</Link> |
+              <Link to="/yellow">Yellow</Link>
+            </div>
+
+            <SwipeableRoutes>
+              <Route path="/red" component={RedView} />
+              <Route path="/blue" component={BlueView} />
+              <Route path="/green" component={GreenView} />
+              <Route path="/yellow" component={YellowView} />
+            </SwipeableRoutes>
           </div>
 
-          <SwipeableRoutes>
-            <Route path="/red" component={RedView} />
-            <Route path="/blue" component={BlueView} />
-            <Route path="/green" component={GreenView} />
-            <Route path="/yellow" component={YellowView} />
-          </SwipeableRoutes>
+          <div>
+            <h3>With index {this.state.index.toFixed(1)}</h3>
+
+            <div>
+              <Link to="/red">Red</Link> |
+              <Link to="/blue">Blue</Link> |
+              <Link to="/green">Green</Link> |
+              <Link to="/yellow">Yellow</Link>
+            </div>
+
+            <SwipeableRoutes onChangeIndex={index => this.setState({ index })}>
+              <Route path="/red" component={RedView} />
+              <Route path="/blue" component={BlueView} />
+              <Route path="/green" component={GreenView} />
+              <Route path="/yellow" component={YellowView} />
+            </SwipeableRoutes>
+          </div>
         </div>
       </Router>
     );
