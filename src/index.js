@@ -47,6 +47,19 @@ class SwipeableRoutes extends Component {
     this.unlistenHistory();
   }
 
+  componentDidUpdate(prevProps) {
+    const { router: { history } } = this.context;
+
+    // If index prop changed, change the location to the path of that route
+    if (prevProps.index !== this.props.index) {
+      const paths = React.Children.map(
+        this.props.children,
+        element => element.props.path
+      );
+      history.push(paths[this.props.index]);
+    }
+  }
+
   render() {
     const { children, index, ...rest } = this.props;
     const { history, route, staticContext } = this.context.router;
@@ -83,14 +96,14 @@ class SwipeableRoutes extends Component {
           return component
             ? React.createElement(component, props)
             : render
-                ? render()
-                : children
-                    ? typeof children === "function"
-                        ? children(props)
-                        : !Array.isArray(children) || children.length // Preact defaults to empty children array
-                            ? React.Children.only(children)
-                            : null
-                    : null;
+              ? render()
+              : children
+                ? typeof children === "function"
+                  ? children(props)
+                  : !Array.isArray(children) || children.length // Preact defaults to empty children array
+                    ? React.Children.only(children)
+                    : null
+                : null;
         })}
       </SwipeableViews>
     );
