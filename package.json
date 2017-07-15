@@ -1,42 +1,35 @@
 {
   "name": "react-swipeable-routes",
-  "version": "0.2.0-beta.2",
-  "description": "Utility for integrating react-swipeable-views with react-router.",
+  "version": "1.0.0",
+  "description": "react-swipeable-routes React component",
   "main": "lib/index.js",
+  "module": "es/index.js",
+  "files": ["css", "es", "lib", "umd"],
   "scripts": {
-    "build": "NODE_ENV=production babel --out-dir lib/ src",
-    "start": "NODE_ENV=production babel --watch --out-dir lib/ src",
-    "test": "jest"
+    "build": "nwb build-react-component",
+    "clean": "nwb clean-module && nwb clean-demo",
+    "start": "nwb serve-react-demo --host 0.0.0.0",
+    "test": "nwb test-react",
+    "test:coverage": "nwb test-react --coverage",
+    "test:watch": "nwb test-react --server"
+  },
+  "dependencies": {
+    "react-swipeable-views": "^0.12.4"
+  },
+  "peerDependencies": {
+    "react": "15.x",
+    "react-router": "4.x"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-jest": "^19.0.0",
-    "babel-preset-react-app": "^2.2.0",
-    "enzyme": "^2.8.2",
-    "jest": "^19.0.2",
-    "react-addons-test-utils": "^15.5.1"
+    "nwb": "0.18.x",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-router": "^4.1.1",
+    "react-router-dom": "^4.1.1"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/sanfilippopablo/react-swipeable-routes.git"
-  },
-  "keywords": [
-    "react",
-    "router",
-    "swipeable",
-    "views",
-    "pwa"
-  ],
-  "author": "Pablo Sanfilippo",
+  "author": "",
+  "homepage": "",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/sanfilippopablo/react-swipeable-routes/issues"
-  },
-  "homepage": "https://github.com/sanfilippopablo/react-swipeable-routes",
-  "dependencies": {
-    "prop-types": "^15.5.6",
-    "react": "^15.5.3",
-    "react-router": "^4.0.0",
-    "react-swipeable-views": "^0.12.1"
-  }
+  "repository": "",
+  "keywords": ["react-component"]
 }

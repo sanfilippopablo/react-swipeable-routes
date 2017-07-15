@@ -1,21 +1,15 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
-import "./App.css";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import SwipeableRoutes from "../../lib";
 
-const RedView = () => (
-  <div style={{ height: 300, backgroundColor: "red" }}>Red</div>
-);
-const BlueView = () => (
-  <div style={{ height: 300, backgroundColor: "blue" }}>Blue</div>
-);
-const GreenView = () => (
-  <div style={{ height: 300, backgroundColor: "green" }}>Green</div>
-);
-const YellowView = () => (
-  <div style={{ height: 300, backgroundColor: "yellow" }}>Yellow</div>
-);
+const RedView = () =>
+  <div style={{ height: 300, backgroundColor: "red" }}>Red</div>;
+const BlueView = () =>
+  <div style={{ height: 300, backgroundColor: "blue" }}>Blue</div>;
+const GreenView = () =>
+  <div style={{ height: 300, backgroundColor: "green" }}>Green</div>;
+const YellowView = () =>
+  <div style={{ height: 300, backgroundColor: "yellow" }}>Yellow</div>;
 
 class App extends Component {
   state = {
@@ -25,12 +19,8 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className="App">
-          <div className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h2>React Swipeable Routes example</h2>
-          </div>
-
+        <div>
+          <h2>Demo</h2>
           <div>
             <h3>Simple example</h3>
 
@@ -50,7 +40,9 @@ class App extends Component {
           </div>
 
           <div>
-            <h3>With index {this.state.index.toFixed(1)}</h3>
+            <h3>
+              With index {this.state.index.toFixed(1)}
+            </h3>
 
             <div>
               <Link to="/red">Red</Link> |

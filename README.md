@@ -1,11 +1,23 @@
-react-swipeable-routes
-======================
+# react-swipeable-routes
+
+[![Travis][build-badge]][build]
+[![npm package][npm-badge]][npm]
+[![Coveralls][coveralls-badge]][coveralls]
 
 Utility for integrating [react-swipeable-views](https://github.com/oliviertassinari/react-swipeable-views) with [react-router](https://github.com/ReactTraining/react-router).
 
+[build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square
+[build]: https://travis-ci.org/user/repo
+
+[npm-badge]: https://img.shields.io/npm/v/npm-package.png?style=flat-square
+[npm]: https://www.npmjs.org/package/npm-package
+
+[coveralls-badge]: https://img.shields.io/coveralls/user/repo/master.png?style=flat-square
+[coveralls]: https://coveralls.io/github/user/repo
+
 ## Example
 
-Notice how the url changes when swapping.
+Notice how the url changes when swipping.
 
 ![Example](https://fat.gfycat.com/WellinformedInfamousBuckeyebutterfly.gif)
 
