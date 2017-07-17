@@ -10,7 +10,7 @@ Utility for integrating [react-swipeable-views](https://github.com/oliviertassin
 [build]: https://travis-ci.org/sanfilippopablo/react-swipeable-routes
 
 [npm-badge]: https://img.shields.io/npm/v/npm-package.png?style=flat-square
-[npm]: https://www.npmjs.org/package/npm-package
+[npm]: https://www.npmjs.com/package/react-swipeable-routes
 
 [coveralls-badge]: https://img.shields.io/coveralls/sanfilippopablo/react-swipeable-routes/master.png?style=flat-square
 [coveralls]: https://coveralls.io/github/sanfilippopablo/react-swipeable-routes
