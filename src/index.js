@@ -96,7 +96,7 @@ class SwipeableRoutes extends Component {
           return component
             ? React.createElement(component, props)
             : render
-              ? render()
+              ? render(props)
               : children
                 ? typeof children === "function"
                   ? children(props)
