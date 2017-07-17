@@ -6,14 +6,14 @@
 
 Utility for integrating [react-swipeable-views](https://github.com/oliviertassinari/react-swipeable-views) with [react-router](https://github.com/ReactTraining/react-router).
 
-[build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square
-[build]: https://travis-ci.org/user/repo
+[build-badge]: https://img.shields.io/travis/sanfilippopablo/react-swipeable-routes/master.png?style=flat-square
+[build]: https://travis-ci.org/sanfilippopablo/react-swipeable-routes
 
 [npm-badge]: https://img.shields.io/npm/v/npm-package.png?style=flat-square
 [npm]: https://www.npmjs.org/package/npm-package
 
-[coveralls-badge]: https://img.shields.io/coveralls/user/repo/master.png?style=flat-square
-[coveralls]: https://coveralls.io/github/user/repo
+[coveralls-badge]: https://img.shields.io/coveralls/sanfilippopablo/react-swipeable-routes/master.png?style=flat-square
+[coveralls]: https://coveralls.io/github/sanfilippopablo/react-swipeable-routes
 
 ## Example
 
