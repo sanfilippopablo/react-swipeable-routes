@@ -1,15 +1,10 @@
 {
   "name": "react-swipeable-routes",
-  "version": "1.0.0",
-  "description": "react-swipeable-routes React component",
+  "version": "0.2.0-beta.2",
+  "description": "Utility for integrating react-swipeable-views with react-router.",
   "main": "lib/index.js",
   "module": "es/index.js",
-  "files": [
-    "css",
-    "es",
-    "lib",
-    "umd"
-  ],
+  "files": ["css", "es", "lib", "umd"],
   "scripts": {
     "build": "nwb build-react-component",
     "clean": "nwb clean-module && nwb clean-demo",
@@ -42,11 +37,22 @@
       "^.+\\.js$": "<rootDir>/jest.transform.js"
     }
   },
-  "author": "",
-  "homepage": "",
+  "author": "Pablo Sanfilippo",
+  "homepage": "https://github.com/sanfilippopablo/react-swipeable-routes",
   "license": "MIT",
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sanfilippopablo/react-swipeable-routes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sanfilippopablo/react-swipeable-routes/issues"
+  },
   "keywords": [
-    "react-component"
+    "react",
+    "react-component",
+    "router",
+    "swipeable",
+    "views",
+    "pwa"
   ]
 }
