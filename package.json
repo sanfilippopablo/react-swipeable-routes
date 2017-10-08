@@ -22,7 +22,7 @@
     "react-swipeable-views": "^0.12.4"
   },
   "peerDependencies": {
-    "react": "15.x",
+    "react": "15.x || 16.x",
     "react-router": "4.x"
   },
   "devDependencies": {
