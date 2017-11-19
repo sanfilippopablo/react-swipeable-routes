@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import SwipeableViews from "react-swipeable-views";
 import { Route, matchPath } from "react-router";
 import PropTypes from "prop-types";
+import generatePath from "./generatePath";
 
 class SwipeableRoutes extends Component {
   static contextTypes = {
@@ -10,14 +11,30 @@ class SwipeableRoutes extends Component {
     }).isRequired
   };
 
+  state = {
+    urls: {}
+  };
+
+  // Trigger the location change to the route path
   handleIndexChange = (index, type) => {
-    // Trigger the location change to the route path
     const { router: { history } } = this.context;
-    const paths = React.Children.map(
-      this.props.children,
-      element => element.props.path
-    );
-    history.push(paths[index]);
+    const { props: { path, defaultsParams } } = React.Children.toArray(
+      this.props.children
+    )[index];
+
+    let url;
+    if (path.includes(":")) {
+      if (path in this.state.urls) {
+        url = this.state.urls[path];
+      } else {
+        // Build url with defaults
+        url = generatePath(path, defaultsParams);
+        this.setState(state => ({ urls: { ...state.urls, [path]: url } }));
+      }
+    } else {
+      url = path;
+    }
+    history.push(url);
 
     // Call the onChangeIndex if it's set
     if (typeof this.props.onChangeIndex === "function") {
@@ -25,21 +42,28 @@ class SwipeableRoutes extends Component {
     }
   };
 
-  componentDidMount() {
+  triggerOnChangeIndex = location => {
     const { children } = this.props;
+    React.Children.forEach(children, (element, index) => {
+      const { path: pathProp, exact, strict, from } = element.props;
+      const path = pathProp || from;
+      if (matchPath(location.pathname, { path, exact, strict })) {
+        if (typeof this.props.onChangeIndex === "function") {
+          this.props.onChangeIndex(index);
+        }
+        this.setState(state => ({
+          urls: { ...state.urls, [path]: location.pathname }
+        }));
+      }
+    });
+  };
+
+  componentDidMount() {
     const { router: { history } } = this.context;
+    this.triggerOnChangeIndex(history.location);
     this.unlistenHistory = history.listen(location => {
       // When the location changes, call onChangeIndex with the route index
-      React.Children.forEach(children, (element, index) => {
-        const { path: pathProp, exact, strict, from } = element.props;
-        const path = pathProp || from;
-
-        if (matchPath(location.pathname, { path, exact, strict })) {
-          if (typeof this.props.onChangeIndex === "function") {
-            this.props.onChangeIndex(index);
-          }
-        }
-      });
+      this.triggerOnChangeIndex(location);
     });
   }
 
@@ -64,17 +88,32 @@ class SwipeableRoutes extends Component {
     const { children, index, ...rest } = this.props;
     const { history, route, staticContext } = this.context.router;
     const location = this.props.location || route.location;
-    const props = { location, history, staticContext };
 
-    let matchedIndex = 0; // If there's no match, render the first route
+    // If there's no match, render the first route with no params
+    let matchedIndex = 0;
+    let match;
     if (index) {
       matchedIndex = index;
+      const routes = React.Children.toArray(children);
+      for (let i = 0; i < routes.length; i++) {
+        const route = routes[i];
+        if (!route.props.path.includes(":")) {
+          match = matchPath(firstRoute.props.path, {
+            path: firstRoute.props.path
+          });
+          break;
+        }
+      }
+      if (!match) {
+        throw Error("There must be at least one route without parameters");
+      }
     } else {
       React.Children.forEach(children, (element, index) => {
         const { path: pathProp, exact, strict, from } = element.props;
         const path = pathProp || from;
 
-        if (matchPath(location.pathname, { path, exact, strict })) {
+        match = matchPath(location.pathname, { path, exact, strict });
+        if (match) {
           matchedIndex = index;
         }
       });
@@ -86,8 +125,20 @@ class SwipeableRoutes extends Component {
         index={matchedIndex}
         onChangeIndex={this.handleIndexChange}
       >
-        {React.Children.map(children, element => {
-          const { component, render, children } = element.props;
+        {React.Children.map(children, (element, index) => {
+          const { path, component, render, children } = element.props;
+          const props = { location, history, staticContext };
+          // Add the match prop only to the matched route
+          if (matchedIndex == index) {
+            props.match = match;
+          }
+
+          if (path in this.state.urls) {
+            props.outOfViewMatch = matchPath(this.state.urls[path], element.props);
+          }
+          if (element.props.defaultsParams) {
+            props.defaultsParams = element.props.defaultsParams;
+          }
           // A lot of this code is borrowed from the render method of
           // Route. Why can't I just render the Route then?
           // Because Route only renders the component|render|children

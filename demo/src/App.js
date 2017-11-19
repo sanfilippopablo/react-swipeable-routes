@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import SwipeableRoutes from "../../lib";
+import SwipeableRoutes from "../../src";
 
 const RedView = () =>
   <div style={{ height: 300, backgroundColor: "red" }}>Red</div>;
@@ -10,6 +10,9 @@ const GreenView = () =>
   <div style={{ height: 300, backgroundColor: "green" }}>Green</div>;
 const YellowView = () =>
   <div style={{ height: 300, backgroundColor: "yellow" }}>Yellow</div>;
+const OtherView = ({ match, defaultsParams, outOfViewMatch }) => console.log({match, outOfViewMatch}) ||
+  <div style={{ height: 300, backgroundColor: match ? match.params.color : outOfViewMatch ? outOfViewMatch.params.color : defaultsParams.color }}>Other</div>;
+
 
 class App extends Component {
   state = {
@@ -23,12 +26,12 @@ class App extends Component {
           <h2>Demo</h2>
           <div>
             <h3>Simple example</h3>
-
             <div>
               <Link to="/red">Red</Link> |
               <Link to="/blue">Blue</Link> |
               <Link to="/green">Green</Link> |
-              <Link to="/yellow">Yellow</Link>
+              <Link to="/yellow">Yellow</Link> |
+              <Link to="/other/saddlebrown">Brown</Link>
             </div>
 
             <SwipeableRoutes>
@@ -36,6 +39,7 @@ class App extends Component {
               <Route path="/blue" component={BlueView} />
               <Route path="/green" component={GreenView} />
               <Route path="/yellow" component={YellowView} />
+              <Route path="/other/:color" component={OtherView} defaultsParams={{color: 'brown'}} />
             </SwipeableRoutes>
           </div>
 
