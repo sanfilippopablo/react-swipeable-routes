@@ -87,3 +87,70 @@ Any additional props will be passed down to `SwipeableViews`:
   <Route path="/yellow" component={YellowView} />
 </SwipeableRoutes>
 ````
+
+### Routes with parameters
+
+````es6
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import SwipeableRoutes from "react-swipeable-routes";
+
+const RedView = () => (
+  <div style={{ height: 300, backgroundColor: "red" }}>Red</div>
+);
+const BlueView = () => (
+  <div style={{ height: 300, backgroundColor: "blue" }}>Blue</div>
+);
+const GreenView = () => (
+  <div style={{ height: 300, backgroundColor: "green" }}>Green</div>
+);
+const YellowView = () => (
+  <div style={{ height: 300, backgroundColor: "yellow" }}>Yellow</div>
+);
+const OtherColorView = ({ match }) => (
+  <div style={{ height: 300, backgroundColor: match.params.color }}>{match.params.color}</div>
+)
+
+class App extends Component {
+  render() {
+    return (
+      <Router>
+        <div className="App">
+          <div className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <h2>React Swipeable Routes example</h2>
+          </div>
+
+          <div>
+            <Link to="/red">Red</Link> |
+            <Link to="/blue">Blue</Link> | 
+            <Link to="/green">Green</Link> | 
+            <Link to="/yellow">Yellow</Link> | 
+            <Link to="/other/palevioletred">Pale Violet Red</Link> | 
+            <Link to="/other/saddlebrown">Saddle Brown</Link>
+          </div>
+
+          <SwipeableRoutes>
+            <Route path="/red" component={RedView} />
+            <Route path="/blue" component={BlueView} />
+            <Route path="/green" component={GreenView} />
+            <Route path="/yellow" component={YellowView} />
+            <Route path="/other/:color" component={OtherColorView} defaultParams={{color: 'grey'}} />
+          </SwipeableRoutes>
+        </div>
+      </Router>
+    );
+  }
+}
+
+export default App;
+
+````
+
+Unlike, react-router, with react-swipeable-routes all routes have to be rendered at all times. Because of that, unlike react-router, in which your component gets a match object only if there was a match, here your rendered component will always receive a `match` prop with same structure as the `match` prop in react-router except for one difference: it includes a type object indicating what type of match it is:
+
+* `none`: The view was never rendered and its parameters are the specified defaults.
+* `outOfView`: The view has different parameters than default, but it's currently out of the screen.
+* `full`: The view is currently on screen an it has different parameters than default.
