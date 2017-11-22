@@ -18,7 +18,7 @@ class SwipeableRoutes extends Component {
   // Trigger the location change to the route path
   handleIndexChange = (index, type) => {
     const { router: { history } } = this.context;
-    const { props: { path, defaultsParams } } = React.Children.toArray(
+    const { props: { path, defaultParams } } = React.Children.toArray(
       this.props.children
     )[index];
 
@@ -28,7 +28,7 @@ class SwipeableRoutes extends Component {
         url = this.state.urls[path];
       } else {
         // Build url with defaults
-        url = generatePath(path, defaultsParams);
+        url = generatePath(path, defaultParams);
         this.setState(state => ({ urls: { ...state.urls, [path]: url } }));
       }
     } else {
@@ -128,17 +128,25 @@ class SwipeableRoutes extends Component {
         {React.Children.map(children, (element, index) => {
           const { path, component, render, children } = element.props;
           const props = { location, history, staticContext };
-          // Add the match prop only to the matched route
-          if (matchedIndex == index) {
-            props.match = match;
-          }
 
-          if (path in this.state.urls) {
-            props.outOfViewMatch = matchPath(this.state.urls[path], element.props);
+          let match = matchPath(location.pathname, element.props);
+          if (match) {
+            match.type = "full";
+          } else if (path in this.state.urls) {
+            match = matchPath(this.state.urls[path], element.props);
+            match.type = "outOfView";
+          } else {
+            console.log(element.props.defaultParams);
+            match = matchPath(
+              generatePath(path, element.props.defaultParams),
+              element.props
+            );
+            match.type = "none";
           }
-          if (element.props.defaultsParams) {
-            props.defaultsParams = element.props.defaultsParams;
-          }
+          props.match = match;
+
+          console.log(match);
+
           // A lot of this code is borrowed from the render method of
           // Route. Why can't I just render the Route then?
           // Because Route only renders the component|render|children
