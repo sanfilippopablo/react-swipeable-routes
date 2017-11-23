@@ -89,6 +89,7 @@ Any additional props will be passed down to `SwipeableViews`:
 ````
 
 ### Routes with parameters
+You can include routes with parameters in the path. However, you can't swipe to them directly, you have to enter through a link or a url change. If you want to be able to swipe to them, you can include a `defaultParams` props specifying the default parameters for when swipping to them.
 
 ````es6
 import React, { Component } from "react";

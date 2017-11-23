@@ -119,13 +119,22 @@ class SwipeableRoutes extends Component {
       });
     }
 
+    const renderableRoutes = React.Children.toArray(children).filter(
+      (element, index) =>
+        !element.props.path.includes(":") ||
+        Boolean(element.props.defaultParams) ||
+        element.props.path in this.state.urls
+    );
+
+    console.log(`renderableRoutes: ${renderableRoutes.length}. children: ${React.Children.count(children)}`)
+
     return (
       <SwipeableViews
         {...rest}
         index={matchedIndex}
         onChangeIndex={this.handleIndexChange}
       >
-        {React.Children.map(children, (element, index) => {
+        {renderableRoutes.map((element, index) => {
           const { path, component, render, children } = element.props;
           const props = { location, history, staticContext };
 
