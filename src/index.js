@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import SwipeableViews from "react-swipeable-views";
-import { Route, matchPath } from "react-router";
+import { matchPath } from "react-router";
 import PropTypes from "prop-types";
 import generatePath from "./generatePath";
 
@@ -94,19 +94,6 @@ class SwipeableRoutes extends Component {
     let match;
     if (index) {
       matchedIndex = index;
-      const routes = React.Children.toArray(children);
-      for (let i = 0; i < routes.length; i++) {
-        const route = routes[i];
-        if (!route.props.path.includes(":")) {
-          match = matchPath(firstRoute.props.path, {
-            path: firstRoute.props.path
-          });
-          break;
-        }
-      }
-      if (!match) {
-        throw Error("There must be at least one route without parameters");
-      }
     } else {
       React.Children.forEach(children, (element, index) => {
         const { path: pathProp, exact, strict, from } = element.props;
@@ -126,8 +113,6 @@ class SwipeableRoutes extends Component {
         element.props.path in this.state.urls
     );
 
-    console.log(`renderableRoutes: ${renderableRoutes.length}. children: ${React.Children.count(children)}`)
-
     return (
       <SwipeableViews
         {...rest}
@@ -145,7 +130,6 @@ class SwipeableRoutes extends Component {
             match = matchPath(this.state.urls[path], element.props);
             match.type = "outOfView";
           } else {
-            console.log(element.props.defaultParams);
             match = matchPath(
               generatePath(path, element.props.defaultParams),
               element.props
@@ -153,8 +137,7 @@ class SwipeableRoutes extends Component {
             match.type = "none";
           }
           props.match = match;
-
-          console.log(match);
+          props.key = path;
 
           // A lot of this code is borrowed from the render method of
           // Route. Why can't I just render the Route then?
