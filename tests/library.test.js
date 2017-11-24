@@ -63,16 +63,16 @@ test("shows the route matching the location", () => {
   );
 });
 
-test("changes the url when the visible view changes", () => {
-  const wrapper = mount(<Main initialPath="/red" />);
-  const SwipeableViewsWrapper = wrapper.find("SwipeableViews");
-  const RedViewWrapper = wrapper.find("RedView").parent();
+// test("changes the url when the visible view changes", () => {
+//   const wrapper = mount(<Main initialPath="/red" />);
+//   const SwipeableViewsWrapper = wrapper.find("SwipeableViews");
+//   const RedViewWrapper = wrapper.find("RedView").parent();
 
-  // RedView is visible
-  expect(RedViewWrapper.getDOMNode().getAttribute("aria-hidden")).toBe("false");
+//   // RedView is visible
+//   expect(RedViewWrapper.getDOMNode().getAttribute("aria-hidden")).toBe("false");
 
-  // Swipe
+//   // Swipe
 
-  // Now RedView is hidden
-  expect(RedViewWrapper.getDOMNode().getAttribute("aria-hidden")).toBe("true");
-});
+//   // Now RedView is hidden
+//   expect(RedViewWrapper.getDOMNode().getAttribute("aria-hidden")).toBe("true");
+// });
