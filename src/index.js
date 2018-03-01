@@ -34,7 +34,7 @@ class SwipeableRoutes extends Component {
     } else {
       url = path;
     }
-    history.push(url);
+    this.historyGoTo(url);
 
     // Call the onChangeIndex if it's set
     if (typeof this.props.onChangeIndex === "function") {
@@ -56,6 +56,12 @@ class SwipeableRoutes extends Component {
         }));
       }
     });
+  };
+
+  historyGoTo = path => {
+    const { router: { history } } = this.context;
+    const { replace } = this.props;
+    return replace ? history.replace(path) : history.push(path);
   };
 
   componentDidMount() {
@@ -80,12 +86,12 @@ class SwipeableRoutes extends Component {
         this.props.children,
         element => element.props.path
       );
-      history.push(paths[this.props.index]);
+      this.historyGoTo(paths[this.props.index]);
     }
   }
 
   render() {
-    const { children, index, ...rest } = this.props;
+    const { children, index, replace, ...rest } = this.props;
     const { history, route, staticContext } = this.context.router;
     const location = this.props.location || route.location;
 

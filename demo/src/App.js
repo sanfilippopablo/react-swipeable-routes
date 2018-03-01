@@ -34,7 +34,7 @@ class App extends Component {
             <Link to="/other/saddlebrown">Saddle Brown</Link>
           </div>
 
-          <SwipeableRoutes>
+          <SwipeableRoutes replace>
             <Route path="/red" component={RedView} />
             <Route path="/blue" component={BlueView} />
             <Route path="/green" component={GreenView} />
