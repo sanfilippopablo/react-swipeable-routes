@@ -17,10 +17,12 @@ class SwipeableRoutes extends Component {
 
   // Trigger the location change to the route path
   handleIndexChange = (index, type) => {
-    const { router: { history } } = this.context;
-    const { props: { path, defaultParams } } = React.Children.toArray(
-      this.props.children
-    )[index];
+    const {
+      router: { history }
+    } = this.context;
+    const {
+      props: { path, defaultParams }
+    } = React.Children.toArray(this.props.children)[index];
 
     let url;
     if (path.includes(":")) {
@@ -59,13 +61,17 @@ class SwipeableRoutes extends Component {
   };
 
   historyGoTo = path => {
-    const { router: { history } } = this.context;
+    const {
+      router: { history }
+    } = this.context;
     const { replace } = this.props;
     return replace ? history.replace(path) : history.push(path);
   };
 
   componentDidMount() {
-    const { router: { history } } = this.context;
+    const {
+      router: { history }
+    } = this.context;
     this.triggerOnChangeIndex(history.location);
     this.unlistenHistory = history.listen(location => {
       // When the location changes, call onChangeIndex with the route index
@@ -78,7 +84,9 @@ class SwipeableRoutes extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { router: { history } } = this.context;
+    const {
+      router: { history }
+    } = this.context;
 
     // If index prop changed, change the location to the path of that route
     if (prevProps.index !== this.props.index) {
@@ -91,7 +99,7 @@ class SwipeableRoutes extends Component {
   }
 
   render() {
-    const { children, index, replace, ...rest } = this.props;
+    const { children, index, replace, innerRef, ...rest } = this.props;
     const { history, route, staticContext } = this.context.router;
     const location = this.props.location || route.location;
 
@@ -124,6 +132,7 @@ class SwipeableRoutes extends Component {
         {...rest}
         index={matchedIndex}
         onChangeIndex={this.handleIndexChange}
+        ref={innerRef}
       >
         {renderableRoutes.map((element, index) => {
           const { path, component, render, children } = element.props;
@@ -153,14 +162,14 @@ class SwipeableRoutes extends Component {
           return component
             ? React.createElement(component, props)
             : render
-              ? render(props)
-              : children
-                ? typeof children === "function"
-                  ? children(props)
-                  : !Array.isArray(children) || children.length // Preact defaults to empty children array
-                    ? React.Children.only(children)
-                    : null
-                : null;
+            ? render(props)
+            : children
+            ? typeof children === "function"
+              ? children(props)
+              : !Array.isArray(children) || children.length // Preact defaults to empty children array
+              ? React.Children.only(children)
+              : null
+            : null;
         })}
       </SwipeableViews>
     );

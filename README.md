@@ -54,10 +54,8 @@ class App extends Component {
           </div>
 
           <div>
-            <Link to="/red">Red</Link> |
-            <Link to="/blue">Blue</Link> |
-            <Link to="/green">Green</Link> |
-            <Link to="/yellow">Yellow</Link>
+            <Link to="/red">Red</Link> |<Link to="/blue">Blue</Link> |
+            <Link to="/green">Green</Link> |<Link to="/yellow">Yellow</Link>
           </div>
 
           <SwipeableRoutes>
@@ -97,6 +95,38 @@ You can add a `replace` prop to `SwipeableRoutes` and it will replace location i
   <Route path="/green" component={GreenView} />
   <Route path="/yellow" component={YellowView} />
 </SwipeableRoutes>
+```
+
+### Scroll to top on swipe
+
+```es6
+class App extends Component {
+  scrollToTop = index => {
+    Array.from(this.el.containerNode.children).forEach((child, i) => {
+      if (index !== i) {
+        child.scrollTo(0, 0);
+      }
+    });
+  };
+
+  render() {
+    return (
+      <Router>
+        <div className="App">
+          <SwipeableRoutes
+            replace
+            onChangeIndex={this.scrollToTop}
+            innerRef={el => (this.el = el)}
+            containerStyle={{ height: 200 }}
+          >
+            <Route path="/red" component={RedView} />
+            <Route path="/blue" component={BlueView} />
+          </SwipeableRoutes>
+        </div>
+      </Router>
+    );
+  }
+}
 ```
 
 ### Routes with parameters
@@ -139,10 +169,8 @@ class App extends Component {
           </div>
 
           <div>
-            <Link to="/red">Red</Link> |
-            <Link to="/blue">Blue</Link> |
-            <Link to="/green">Green</Link> |
-            <Link to="/yellow">Yellow</Link> |
+            <Link to="/red">Red</Link> |<Link to="/blue">Blue</Link> |
+            <Link to="/green">Green</Link> |<Link to="/yellow">Yellow</Link> |
             <Link to="/other/palevioletred">Pale Violet Red</Link> |
             <Link to="/other/saddlebrown">Saddle Brown</Link>
           </div>
@@ -167,8 +195,8 @@ class App extends Component {
 export default App;
 ```
 
-Unlike, react-router, with react-swipeable-routes all routes have to be rendered at all times. Because of that, unlike react-router, in which your component gets a match object only if there was a match, here your rendered component will always receive a `match` prop with same structure as the `match` prop in react-router except for one difference: it includes a type object indicating what type of match it is:
+Unlike react-router, with react-swipeable-routes all routes have to be rendered at all times. Because of that, unlike react-router, in which your component gets a match object only if there was a match, here your rendered component will always receive a `match` prop with same structure as the `match` prop in react-router except for one difference: it includes a type object indicating what type of match it is:
 
-* `none`: The view was never rendered and its parameters are the specified defaults.
-* `outOfView`: The view has different parameters than default, but it's currently out of the screen.
-* `full`: The view is currently on screen an it has different parameters than default.
+- `none`: The view was never rendered and its parameters are the specified defaults.
+- `outOfView`: The view has different parameters than default, but it's currently out of the screen.
+- `full`: The view is currently on screen an it has different parameters than default.
