@@ -2,20 +2,20 @@ import React from "react";
 import { MemoryRouter, Route } from "react-router";
 import { mount } from "enzyme";
 import SwipeableRoutes from "../src";
+import {
+  render,
+  fireEvent,
+  cleanup,
+  waitForElement,
+  getByText,
+  wait
+} from "react-testing-library";
 
 const RedView = () => <div>RedView</div>;
 const BlueView = () => <div>BlueView</div>;
 
-const Main = ({ initialPath }) =>
-  <MemoryRouter initialEntries={[initialPath]}>
-    <SwipeableRoutes>
-      <Route path="/red" component={RedView} />
-      <Route path="/blue" component={BlueView} />
-    </SwipeableRoutes>
-  </MemoryRouter>;
-
 test("render when using Route render method and pass all props", () => {
-  const wrapper = mount(
+  const { container } = render(
     <MemoryRouter initialEntries={["/red"]}>
       <SwipeableRoutes>
         <Route
@@ -31,11 +31,11 @@ test("render when using Route render method and pass all props", () => {
     </MemoryRouter>
   );
 
-  expect(wrapper.text()).toBe("RedView");
+  getByText(container, "RedView");
 });
 
 test("render when using Route render method", () => {
-  const wrapper = mount(
+  render(
     <MemoryRouter initialEntries={["/red"]}>
       <SwipeableRoutes>
         <Route path="/red" render={() => <RedView />} />
@@ -45,34 +45,68 @@ test("render when using Route render method", () => {
 });
 
 test("renders all the child routes", () => {
-  const wrapper = mount(<Main initialPath="/" />);
-  expect(wrapper.text()).toEqual("RedViewBlueView");
-});
-
-test("shows the route matching the location", () => {
-  const wrapper = mount(<Main initialPath="/blue" />);
-
-  // RedView should be invisible
-  const RedViewWrapper = wrapper.find("RedView").parent();
-  expect(RedViewWrapper.getDOMNode().getAttribute("aria-hidden")).toBe("true");
-
-  // BlueView should be visible
-  const BlueViewWrapper = wrapper.find("BlueView").parent();
-  expect(BlueViewWrapper.getDOMNode().getAttribute("aria-hidden")).toBe(
-    "false"
+  const { getByText } = render(
+    <MemoryRouter initialEntries={["/"]}>
+      <SwipeableRoutes>
+        <Route path="/red" component={RedView} />
+        <Route path="/blue" component={BlueView} />
+      </SwipeableRoutes>
+    </MemoryRouter>
   );
+  getByText("RedView");
+  getByText("BlueView");
 });
 
-// test("changes the url when the visible view changes", () => {
-//   const wrapper = mount(<Main initialPath="/red" />);
-//   const SwipeableViewsWrapper = wrapper.find("SwipeableViews");
-//   const RedViewWrapper = wrapper.find("RedView").parent();
+test("shows the route matching the location", async () => {
+  const { getByText } = render(
+    <MemoryRouter initialEntries={["/blue"]}>
+      <SwipeableRoutes>
+        <Route path="/red" component={RedView} />
+        <Route path="/blue" component={BlueView} />
+      </SwipeableRoutes>
+    </MemoryRouter>
+  );
 
-//   // RedView is visible
-//   expect(RedViewWrapper.getDOMNode().getAttribute("aria-hidden")).toBe("false");
+  const RedViewWrapper = getByText("RedView").parentElement;
+  const BlueViewWrapper = getByText("BlueView").parentElement;
 
-//   // Swipe
+  setTimeout(() => {
+    // RedView should be invisible
+    expect(RedViewWrapper.getAttribute("aria-hidden")).toBe("true");
 
-//   // Now RedView is hidden
-//   expect(RedViewWrapper.getDOMNode().getAttribute("aria-hidden")).toBe("true");
-// });
+    // BlueView should be visible
+    expect(BlueViewWrapper.getAttribute("aria-hidden")).toBe("false");
+  }, 1);
+});
+
+test("changes the url when the visible view changes", () => {
+  // jsdom doesn't support touch events, so let's use
+  // enableMouseEvents so we can use mouse events to
+  // trigger swipe instead
+  const { getByText } = render(
+    <MemoryRouter initialEntries={["/red"]}>
+      <SwipeableRoutes enableMouseEvents>
+        <Route path="/red" component={RedView} />
+        <Route path="/blue" component={BlueView} />
+      </SwipeableRoutes>
+    </MemoryRouter>
+  );
+
+  const RedViewWrapper = getByText("RedView").parentElement;
+
+  // RedView is visible
+  expect(RedViewWrapper.getAttribute("aria-hidden")).toBe("false");
+
+  // Swipe
+  const start = { pageX: 1000, pageY: 10 };
+  const end = { pageX: 20, pageY: 10 };
+  fireEvent.mouseDown(RedViewWrapper, start);
+  fireEvent.mouseMove(RedViewWrapper, end);
+  fireEvent.mouseUp(RedViewWrapper, end);
+
+  setTimeout(() => {
+    // Now RedView is hidden
+    expect(RedViewWrapper.getAttribute("aria-hidden")).toBe("true");
+    expect(window.location.pathname).toBe("/blue");
+  }, 300);
+});
