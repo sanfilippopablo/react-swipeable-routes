@@ -80,7 +80,6 @@ class SwipeableRoutes extends Component {
   }
 
   render() {
-    console.log(this.props);
     const {
       children,
       index,
