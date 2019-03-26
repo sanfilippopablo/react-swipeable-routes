@@ -1,25 +1,15 @@
 import React, { Component } from "react";
 import SwipeableViews from "react-swipeable-views";
-import { matchPath } from "react-router";
-import PropTypes from "prop-types";
+import { matchPath, withRouter } from "react-router";
 import generatePath from "./generatePath";
 
 class SwipeableRoutes extends Component {
-  static contextTypes = {
-    router: PropTypes.shape({
-      route: PropTypes.object.isRequired
-    }).isRequired
-  };
-
   state = {
     urls: {}
   };
 
   // Trigger the location change to the route path
   handleIndexChange = (index, type) => {
-    const {
-      router: { history }
-    } = this.context;
     const {
       props: { path, defaultParams }
     } = React.Children.toArray(this.props.children)[index];
@@ -61,17 +51,12 @@ class SwipeableRoutes extends Component {
   };
 
   historyGoTo = path => {
-    const {
-      router: { history }
-    } = this.context;
-    const { replace } = this.props;
+    const { replace, history } = this.props;
     return replace ? history.replace(path) : history.push(path);
   };
 
   componentDidMount() {
-    const {
-      router: { history }
-    } = this.context;
+    const { history } = this.props;
     this.triggerOnChangeIndex(history.location);
     this.unlistenHistory = history.listen(location => {
       // When the location changes, call onChangeIndex with the route index
@@ -84,10 +69,6 @@ class SwipeableRoutes extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {
-      router: { history }
-    } = this.context;
-
     // If index prop changed, change the location to the path of that route
     if (prevProps.index !== this.props.index) {
       const paths = React.Children.map(
@@ -99,9 +80,18 @@ class SwipeableRoutes extends Component {
   }
 
   render() {
-    const { children, index, replace, innerRef, ...rest } = this.props;
-    const { history, route, staticContext } = this.context.router;
-    const location = this.props.location || route.location;
+    console.log(this.props);
+    const {
+      children,
+      index,
+      replace,
+      innerRef,
+      location,
+      history,
+      staticContext,
+      match: routeMatch,
+      ...rest
+    } = this.props;
 
     // If there's no match, render the first route with no params
     let matchedIndex = 0;
@@ -176,4 +166,4 @@ class SwipeableRoutes extends Component {
   }
 }
 
-export default SwipeableRoutes;
+export default withRouter(SwipeableRoutes);
