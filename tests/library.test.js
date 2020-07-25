@@ -8,7 +8,7 @@ import {
   cleanup,
   waitForElement,
   getByText,
-  wait
+  wait,
 } from "react-testing-library";
 
 const RedView = () => <div>RedView</div>;
@@ -20,7 +20,7 @@ test("render when using Route render method and pass all props", () => {
       <SwipeableRoutes>
         <Route
           path="/red"
-          render={props => {
+          render={(props) => {
             expect(Object.keys(props)).toEqual(
               expect.arrayContaining(["location", "history", "staticContext"])
             );
@@ -42,19 +42,6 @@ test("render when using Route render method", () => {
       </SwipeableRoutes>
     </MemoryRouter>
   );
-});
-
-test("renders all the child routes", () => {
-  const { getByText } = render(
-    <MemoryRouter initialEntries={["/"]}>
-      <SwipeableRoutes>
-        <Route path="/red" component={RedView} />
-        <Route path="/blue" component={BlueView} />
-      </SwipeableRoutes>
-    </MemoryRouter>
-  );
-  getByText("RedView");
-  getByText("BlueView");
 });
 
 test("shows the route matching the location", async () => {

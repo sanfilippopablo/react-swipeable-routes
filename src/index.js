@@ -5,13 +5,13 @@ import generatePath from "./generatePath";
 
 class SwipeableRoutes extends Component {
   state = {
-    urls: {}
+    urls: {},
   };
 
   // Trigger the location change to the route path
   handleIndexChange = (index, type) => {
     const {
-      props: { path, defaultParams }
+      props: { path, defaultParams },
     } = React.Children.toArray(this.props.children)[index];
 
     let url;
@@ -21,7 +21,7 @@ class SwipeableRoutes extends Component {
       } else {
         // Build url with defaults
         url = generatePath(path, defaultParams);
-        this.setState(state => ({ urls: { ...state.urls, [path]: url } }));
+        this.setState((state) => ({ urls: { ...state.urls, [path]: url } }));
       }
     } else {
       url = path;
@@ -34,7 +34,7 @@ class SwipeableRoutes extends Component {
     }
   };
 
-  triggerOnChangeIndex = location => {
+  triggerOnChangeIndex = (location) => {
     const { children } = this.props;
     React.Children.forEach(children, (element, index) => {
       const { path: pathProp, exact, strict, from } = element.props;
@@ -43,14 +43,14 @@ class SwipeableRoutes extends Component {
         if (typeof this.props.onChangeIndex === "function") {
           this.props.onChangeIndex(index);
         }
-        this.setState(state => ({
-          urls: { ...state.urls, [path]: location.pathname }
+        this.setState((state) => ({
+          urls: { ...state.urls, [path]: location.pathname },
         }));
       }
     });
   };
 
-  historyGoTo = path => {
+  historyGoTo = (path) => {
     const { replace, history } = this.props;
     return replace ? history.replace(path) : history.push(path);
   };
@@ -58,7 +58,7 @@ class SwipeableRoutes extends Component {
   componentDidMount() {
     const { history } = this.props;
     this.triggerOnChangeIndex(history.location);
-    this.unlistenHistory = history.listen(location => {
+    this.unlistenHistory = history.listen((location) => {
       // When the location changes, call onChangeIndex with the route index
       this.triggerOnChangeIndex(location);
     });
@@ -73,7 +73,7 @@ class SwipeableRoutes extends Component {
     if (prevProps.index !== this.props.index) {
       const paths = React.Children.map(
         this.props.children,
-        element => element.props.path
+        (element) => element.props.path
       );
       this.historyGoTo(paths[this.props.index]);
     }
