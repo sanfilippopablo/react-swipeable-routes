@@ -1,6 +1,6 @@
 {
   "name": "react-swipeable-routes",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Utility for integrating react-swipeable-views with react-router.",
   "main": "lib/index.js",
   "module": "es/index.js",
